@@ -28,3 +28,4 @@ molecule:
     - pip3 install ansible molecule[docker]
   script:
     - molecule test
+  timeout: 1h 30m
