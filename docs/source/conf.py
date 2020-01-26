@@ -26,6 +26,8 @@ html_static_path = ["_static"]
 
 html_theme = "sphinx_rtd_theme"
 
+master_doc = "index"
+
 img_base_url = "https://gitlab.com/" + author + "/img/raw/master/"
 img_url = img_base_url + project + "/"
 
