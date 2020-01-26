@@ -1,0 +1,67 @@
+---
+- name: Python common setup.
+  debug:
+    msg:
+      - '--------------------------------------------------------------------'
+      - 'Setup common Python configurations.'
+      - '--------------------------------------------------------------------'
+
+- name: Setup virtualenv.
+  debug:
+    msg:
+      - '____________________________________________________________________'
+      - 'Setting up virtualenv ...'
+      - '____________________________________________________________________'
+
+- name: Create the .virtualenvs directory.
+  file:
+    path: "/home/{{ item }}/.virtualenvs"
+    state: directory
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: u=rwx,g=r,o=r
+  with_items: "{{ unified }}"
+  become: true
+  when:
+    - not ansible_check_mode
+    - item.item_name is not defined
+    - not item == 'root'
+
+- name: Create the .virtualenvs directory using item_name.
+  file:
+    path: "/home/{{ item.item_name }}/.virtualenvs"
+    state: directory
+    owner: "{{ item.item_name }}"
+    group: "{{ item.item_name }}"
+    mode: u=rwx,g=r,o=r
+  with_items: "{{ unified }}"
+  become: true
+  when:
+    - not ansible_check_mode
+    - item.item_name is defined
+    - not item.item_name == 'root'
+
+- name: Create the .virtualenvs directory for root.
+  file:
+    path: /root/.virtualenvs
+    state: directory
+  become: true
+  when:
+    - not ansible_check_mode
+    - unified | regex_replace('', '') is search('root')
+
+- name: Setup pytest.
+  debug:
+    msg:
+      - '____________________________________________________________________'
+      - 'Setting up pytest ...'
+      - '____________________________________________________________________'
+
+- name: Create symbolic link py.test --> py.test-3.
+  file:
+    src: /usr/bin/py.test-3
+    dest: /usr/bin/py.test
+    state: link
+  become: true
+  changed_when: false
+  when: not ansible_check_mode

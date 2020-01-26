@@ -1,0 +1,48 @@
+---
+- name: Display Role Details.
+  debug:
+    msg:
+      - '===================================================================='
+      - 'constrict0r.develpy'
+      - 'Apply python developer configuration.'
+      - '===================================================================='
+
+- name: Python common setup.
+  debug:
+    msg:
+      - '--------------------------------------------------------------------'
+      - 'Main - Handling python common setup.'
+      - '--------------------------------------------------------------------'
+
+- name: Common Python setup for all users.
+  include_tasks: python.yml
+
+- name: Handle direnv setup.
+  debug:
+    msg:
+      - '--------------------------------------------------------------------'
+      - 'Main - Handling direnv setup.'
+      - '--------------------------------------------------------------------'
+
+- name: Setup direnv.
+  include_tasks: direnv.yml
+
+- name: Handle emacs python setup.
+  debug:
+    msg:
+      - '--------------------------------------------------------------------'
+      - 'Main - Handling emacs python setup.'
+      - '--------------------------------------------------------------------'
+
+- name: Setup emacs python plugins.
+  include_tasks: emacs-python.yml
+
+- name: Handle poetry setup.
+  debug:
+    msg:
+      - '--------------------------------------------------------------------'
+      - 'Main - Handling poetry setup.'
+      - '--------------------------------------------------------------------'
+
+- name: Setup poetry.
+  include_tasks: poetry.yml

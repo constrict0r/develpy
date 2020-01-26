@@ -1,0 +1,27 @@
+---
+
+packages:
+ # Base development packages.
+ - https://is.gd/2cvaVM
+ - direnv
+ - python3
+ - python3-pip
+ - python3-pytest
+ - python3-venv
+ - python3-virtualenv
+ - tox
+
+packages_pip:
+ - ansible-lint
+ - autopep8
+ - flake8
+ - jedi
+ - poetry
+ - sphinx
+ - sphinx_rtd_theme
+ - rope
+ - yapf
+
+user_skeleton:
+ - item_path: https://gitlab.com/constrict0r/home
+   item_expand: false

@@ -1,0 +1,43 @@
+---
+- name: Git setup.
+  debug:
+    msg:
+      - '--------------------------------------------------------------------'
+      - 'Configuring direnv ...'
+      - '--------------------------------------------------------------------'
+
+- name: Enable direnv command on ~/.bashrc.
+  lineinfile:
+    path: "/home/{{ item }}/.bashrc"
+    line: eval "$(direnv hook bash)"
+    create: true
+    owner: "{{ item }}"
+  with_items: "{{ unified }}"
+  become: true
+  when:
+    - not ansible_check_mode
+    - item.item_name is not defined
+    - not item == 'root'
+
+- name: Enable direnv command on ~/.bashrc using item_name.
+  lineinfile:
+    path: "/home/{{ item.item_name }}/.bashrc"
+    line: eval "$(direnv hook bash)"
+    create: true
+    owner: "{{ item.item_name }}"
+  with_items: "{{ unified }}"
+  become: true
+  when:
+    - not ansible_check_mode
+    - item.item_name is defined
+    - not item.item_name == 'root'
+
+- name: Enable direnv command on /root/.bashrc.
+  lineinfile:
+    path: "/root/.bashrc"
+    line: eval "$(direnv hook bash)"
+    create: true
+  become: true
+  when:
+    - not ansible_check_mode
+    - unified | regex_replace('', '') is search('root')

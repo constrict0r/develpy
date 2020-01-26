@@ -1,0 +1,43 @@
+---
+- name: Poetry setup.
+  debug:
+    msg:
+      - '--------------------------------------------------------------------'
+      - 'Configuring poetry ...'
+      - '--------------------------------------------------------------------'
+
+- name: Enable direnv command on ~/.profile.
+  lineinfile:
+    path: "/home/{{ item }}/.profile"
+    line: export PATH="$HOME/.poetry/bin:$PATH"
+    create: true
+    owner: "{{ item }}"
+  with_items: "{{ unified }}"
+  become: true
+  when:
+    - not ansible_check_mode
+    - item.item_name is not defined
+    - not item == 'root'
+
+- name: Enable direnv command on ~/.profile using item_name.
+  lineinfile:
+    path: "/home/{{ item.item_name }}/.profile"
+    line: export PATH="$HOME/.poetry/bin:$PATH"
+    create: true
+    owner: "{{ item.item_name }}"
+  with_items: "{{ unified }}"
+  become: true
+  when:
+    - not ansible_check_mode
+    - item.item_name is defined
+    - not item.item_name == 'root'
+
+- name: Enable direnv command on /root/.profile.
+  lineinfile:
+    path: "/root/.profile"
+    line: export PATH="$HOME/.poetry/bin:$PATH"
+    create: true
+  become: true
+  when:
+    - not ansible_check_mode
+    - unified | regex_replace('', '') is search('root')
