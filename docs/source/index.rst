@@ -9,6 +9,8 @@
 
 Ansible role to apply python developer configuration.
 
+|AVATAR_IMG|
+
 Full documentation on |READTHEDOCS_LINK|.
 
 Source code on:

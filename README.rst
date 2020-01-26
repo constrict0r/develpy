@@ -13,6 +13,9 @@ develpy
 
 Ansible role to apply python developer configuration.
 
+.. image:: https://gitlab.com/constrict0r/img/raw/master/develpy/develpy.png
+   :alt: develpy
+
 Full documentation on `Readthedocs <https://develpy.readthedocs.io>`_.
 
 Source code on:
