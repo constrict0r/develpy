@@ -9,7 +9,7 @@ This is capable of:
 
 - Add `apt <https://wiki.debian.org/Apt>`_ repository sources.
 
-- Updated the apt cache.
+- Update the apt cache.
 
 - Uninstall apt packages.
 
