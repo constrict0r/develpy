@@ -308,9 +308,11 @@ By default this role applies the following configuration:
 
       home/
       ├── .emacs.d
-      │   ├── base.el
+      │   ├── config
+      │   │   ├── base.el
+      │   │   ├── org.el
+      |   │   └── python.el
       │   ├── init.el
-      │   ├── python.el
       │   └── themes
       │       └── wintermute-theme.el
       └── .vimrc
