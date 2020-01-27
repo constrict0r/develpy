@@ -8,7 +8,7 @@
 
 - name: Add emacs python configuration file.
   get_url:
-    url: https://is.gd/NtYM1k
+    url: https://is.gd/71jzxS
     dest: "/home/{{ item }}/.emacs.d/config/python.el"
     owner: "{{ item }}"
     group: "{{ item }}"
@@ -22,7 +22,7 @@
 
 - name: Add emacs python configuration file using item_name.
   get_url:
-    url: https://is.gd/NtYM1k
+    url: https://is.gd/71jzxS
     dest: "/home/{{ item.item_name }}/.emacs.d/config/python.el"
     owner: "{{ item.item_name }}"
     group: "{{ item.item_name }}"
@@ -36,7 +36,7 @@
 
 - name: Add emacs python configuration file for root.
   get_url:
-    url: https://is.gd/NtYM1k
+    url: https://is.gd/71jzxS
     dest: /root/.emacs.d/config/python.el
   become: true
   when:
