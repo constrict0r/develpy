@@ -24,7 +24,7 @@ before_script:
   - chmod +x testme.sh
 
 script:
-  - travis_wait 50 sudo ./testme.sh -i -t -x python3 -o m
+  - travis_wait 50 sudo ./testme.sh -i -t -x python3
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
