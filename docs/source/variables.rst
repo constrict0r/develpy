@@ -18,10 +18,10 @@ packages
 
 .. include:: parts/variables/packages.inc
 
-packages_npm
+packages_js
 ..............................................................................
 
-.. include:: parts/variables/packages_npm.inc
+.. include:: parts/variables/packages_js.inc
 
 packages_pip
 ..............................................................................
