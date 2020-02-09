@@ -162,6 +162,8 @@ By default this role applies the following configuration:
 
    * ssh-askpass
 
+   * texlive-bibtex-extra
+
    * texlive-latex-base
 
    * texlive-latex-extra
