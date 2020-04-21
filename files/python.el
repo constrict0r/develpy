@@ -2,7 +2,7 @@
 (mapc #'(lambda (package)
   (unless (package-installed-p package)
     (package-install package)))
-    '(elpy tox)
+    '(elpy poetry tox)
 )
 
 ;; Elpy for python development.
@@ -13,7 +13,7 @@
 ;; Set python version to use.
 (setq py-python-command 'python3)
 
-;; Set python version for elpy. 
+;; Set python version for elpy.
 (setq python-shell-interpreter "python3"
       python-shell-interpreter-args "-i")
 (setq elpy-test-runner (quote elpy-test-pytest-runner))
@@ -23,3 +23,6 @@
 
 ;; Default enviroment for running tox (same as tox.ini).
 (defvar tox-default-env "py37" "Default argument for Tox")
+
+;; Poetry.
+(require 'poetry)

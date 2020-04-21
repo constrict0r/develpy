@@ -1,0 +1,73 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+
+  pre_tasks:
+    - name: Setting up test environment.
+      debug:
+        msg:
+          - '==============================================================='
+          - 'Pre tasks'
+          - '==============================================================='
+
+    - name: Ensure Python requirements installed.
+      apt:
+        name:
+          - python
+          - python-pip
+          - python-setuptools
+          - python3-pip
+          - python3-setuptools
+        state: present
+      changed_when: false
+
+    - name: Ensure Pip requirements installed.
+      pip:
+        name:
+          - flake8
+          - requests
+      become: false
+      changed_when: false
+
+  roles:
+    - role: develpy
+      users: mary
+
+  post_tasks:
+    - name: Run verification tests.
+      debug:
+        msg:
+          - '================================================================'
+          - 'Post tasks'
+          - '================================================================'
+
+    - name: Verify direnv configured for user mary.
+      command: cat /home/mary/.bashrc
+      register: bashrc_result
+      changed_when: false
+      failed_when: bashrc_result.stdout is not search('direnv')
+
+    - name: Verify emacs main configuration file created for mary.
+      file:
+        path: /home/mary/.emacs.d/init.el
+      become: true
+      changed_when: false
+
+    - name: Verify emacs python configuration file created for user mary.
+      file:
+        path: /home/mary/.emacs.d/config/python.el
+      become: true
+      changed_when: false
+
+    - name: Verify emacs theme downloaded for mary.
+      file:
+        path:  /home/mary/.emacs.d/themes/wintermute-theme.el
+      changed_when: false
+
+    - name: Verify poetry configured for user mary.
+      command: cat /home/mary/.profile
+      register: profile_result
+      become: true
+      changed_when: false
+      failed_when: profile_result.stdout is not search('poetry')

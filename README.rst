@@ -13,8 +13,8 @@ develpy
 
 Ansible role to apply python developer configuration.
 
-.. image:: https://gitlab.com/constrict0r/img/raw/master/develpy/develpy.png
-   :alt: develpy
+.. image:: https://gitlab.com/constrict0r/img/raw/master/develpy/avatar.png
+   :alt: avatar
 
 Full documentation on `Readthedocs <https://develpy.readthedocs.io>`_.
 
@@ -24,15 +24,15 @@ Source code on:
 
 `Gitlab <https://gitlab.com/constrict0r/develpy>`_.
 
-`Part of: <https://gitlab.com/explore/projects?tag=doombots>`_
+`Part of: <https://gitlab.com/explore/projects?tag=doombot>`_
 
-.. image:: https://gitlab.com/constrict0r/img/raw/master/develpy/doombots.png
-   :alt: doombots
+.. image:: https://gitlab.com/constrict0r/img/raw/master/develpy/doombot.png
+   :alt: doombot
 
 **Ingredients**
 
-.. image:: https://gitlab.com/constrict0r/img/raw/master/develpy/ingredients.png
-   :alt: ingredients
+.. image:: https://gitlab.com/constrict0r/img/raw/master/develpy/ingredient.png
+   :alt: ingredient
 
 
 Contents
@@ -47,8 +47,9 @@ Contents
       * `Tox <#tox>`_
       * `Tox on Emacs <#tox-on-emacs>`_
       * `Virtualenvs on Emacs <#virtualenvs-on-emacs>`_
-      * `PDB on Emacs <#pdb-on-emacs>`_
+      * `Emacs, PDB & Virtualenv <#emacs-pdb-virtualenv>`_
       * `Poetry <#poetry>`_
+      * `Poetry on Emacs <#poetry-on-emacs>`_
 * `Variables <#Variables>`_
    * `expand <#expand>`_
    * `group <#group>`_
@@ -70,7 +71,7 @@ Contents
 * `Attributes <#Attributes>`_
    * `item_name <#item-name>`_
    * `item_pass <#item-pass>`_
-   * `item_groups <#item-groups>`_
+   * `item_group <#item-group>`_
    * `item_expand <#item-expand>`_
    * `item_path <#item-path>`_
 * `Requirements <#Requirements>`_
@@ -148,7 +149,13 @@ By default this role applies the following configuration:
 
    * bats
 
+   * bchunks
+
+   * build-essential
+
    * emacs
+
+   * flac
 
    * git
 
@@ -293,12 +300,12 @@ By default this role applies the following configuration:
 
          * C-x: Set breakpoint on current line.
 
-   * `poetry <https://poetry.eustace.io/>`_
+   * poetry
 
    ..
 
       * Add poetry path to the *~/.profile* file to maintain
-         dependecies aisolated.
+         dependecies isolated.
 
    * `python3-virtualenv <https://virtualenv.pypa.io/en/latest/>`_
 
@@ -332,6 +339,7 @@ By default this role applies the following configuration:
       home/
       ├── .bashrc
       └── .profile
+
 
 
 Usage
@@ -387,17 +395,15 @@ Usage
         vars:
           packages: [gedit, rolldice]
 
-* To run tests:
+To run tests:
 
-..
+::
 
-   ::
+   cd develpy
+   chmod +x testme.sh
+   ./testme.sh
 
-      cd develpy
-      chmod +x testme.sh
-      ./testme.sh
-
-   On some tests you may need to use *sudo* to succeed.
+On some tests you may need to use *sudo* to succeed.
 
 
 Developer
@@ -452,13 +458,29 @@ Pytest with virtualenv
 If you want to use a *virtualenv* for running your tests, from a
 terminal:
 
-* Activate the virtual enviroment:
+* Create the virtual environment:
+
+..
+
+   ::
+
+      python3 -m venv .
+
+* Activate the virtual environment:
 
 ..
 
    ::
 
       source bin/activate
+
+* Install pytest on the virtual environment:
+
+..
+
+   ::
+
+      python3 -m pip install pytest
 
 * Then run the tests:
 
@@ -477,10 +499,6 @@ On emacs, you can use the following keybindings:
 * C-c C-c: Execute current script.
 
 * C-c C-t: Execute pytest tests.
-
-* M-x tox-run-current-test: Execute current tox test.
-
-* M-x tox-run-current-class: Execute current tox test suite.
 
 For more keybinding available see the `elpy documentation
 <https://elpy.readthedocs.io/en/latest/>`_.
@@ -504,7 +522,7 @@ In order to run tox, execute the following steps:
 
       [tox]
       skipsdist = True
-      envlist = py{35}
+      envlist = py{37}
 
       [testenv]
       deps =
@@ -530,6 +548,12 @@ execute the keybindings:
 ::
 
    M-x tox-current-test RET
+
+Or you can run the entire test suite with:
+
+::
+
+   M-x tox-current-class: Execute current tox test suite.
 
 
 Virtualenvs on Emacs
@@ -563,8 +587,8 @@ Now if you open a file of your project the virtual enviroment
 *my_virtualenv* will be enabled automatically.
 
 
-PDB on Emacs
-------------
+Emacs, PDB & Virtualenv
+-----------------------
 
 In order to run `pdb <https://docs.python.org/3/library/pdb.html>`_
 from emacs when using a virtual enviroment, execute the steps:
@@ -593,7 +617,7 @@ from emacs when using a virtual enviroment, execute the steps:
 
    ::
 
-      #! /usr/bin/python3.5
+      #! /usr/bin/python3.7
 
 * To:
 
@@ -613,13 +637,31 @@ from emacs when using a virtual enviroment, execute the steps:
       M-x shell RET
       python setup.py install RET
 
+* You can now call pdb with
+
+..
+
+   ::
+
+      M-x pdb
+
+You will be prompted (on the minibuffer) for a way to run **pdb**
+(i.e.: *run pdb like this: pdb*), you must run **pdb** passing the
+path to your file:
+
+..
+
+   ::
+
+      pdb my_module.py
+
 * You can now use the following keybindings:
 
 ..
 
    ::
 
-      - M-x pdb: Run PDB on a new window.
+      - M-x pdb my_module.py RET: Run PDB on a new window.
       - C-x: Set breakpoint on current line.
       - c: Run up to the breakpoint.
       - n: Next line.
@@ -633,8 +675,8 @@ from emacs when using a virtual enviroment, execute the steps:
 Poetry
 ------
 
-In order to use `poetry <https://poetry.eustace.io/>`_ you will need a
-**pyproject.toml** file similar to the following:
+In order to use `python poetry <https://poetry.eustace.io/>`_ you will
+need a **pyproject.toml** file similar to the following:
 
 ::
 
@@ -657,7 +699,7 @@ In order to use `poetry <https://poetry.eustace.io/>`_ you will need a
    ]
 
    [tool.poetry.dev-dependencies]
-   pytest = "^3.10"
+   pytest = "^=5.4"
    tox = "^3.14"
 
    [tool.poetry.dependencies]
@@ -692,6 +734,17 @@ And then run **poetry** as a **python3** module:
    python3 -m poetry install
 
 
+Poetry on Emacs
+---------------
+
+You can execute poetry on emacs running the command:
+
+::
+
+   M-x poetry RET
+
+
+
 Variables
 *********
 
@@ -710,7 +763,7 @@ especified paths and URLs.
 If set to *false* each file path or URL found on packages will be
 treated as plain text.
 
-This variable is set to *false* by default.
+This variable is set to *true* by default.
 
 ::
 
@@ -760,7 +813,7 @@ This variable is empty by default.
            - sudo
 
    # To a playbook from terminal.
-   ansible-playbook -i tests/inventory tests/test-playbook.yml -K -e \
+   ansible-playbook -i inventory my-playbook.yml -K -e \
        "{group: [disk, sudo]}"
 
 
@@ -789,7 +842,7 @@ This variable is empty by default.
            - rolldice
 
    # To a playbook from terminal.
-   ansible-playbook -i tests/inventory tests/test-playbook.yml -K -e \
+   ansible-playbook -i inventory my-playbook.yml -K -e \
        "{packages: [gedit, rolldice]}"
 
 
@@ -822,7 +875,7 @@ This variable is empty by default.
              version: 2.22.0
 
    # To a playbook from terminal.
-   ansible-playbook -i tests/inventory tests/test-playbook.yml -K -e \
+   ansible-playbook -i inventory my-playbook.yml -K -e \
        "{packages_js: [node-red, {name: requests, version: 2.22.0}]}"
 
 
@@ -854,7 +907,7 @@ This variable is empty by default.
            - whisper
 
    # To a playbook from terminal.
-   ansible-playbook -i tests/inventory tests/test-playbook.yml -K -e \
+   ansible-playbook -i inventory my-playbook.yml -K -e \
        "{packages_pip: ['bottle==0.12.17', 'whisper']}"
 
 
@@ -883,7 +936,7 @@ This variable is empty by default.
            - rolldice
 
    # To a playbook from terminal.
-   ansible-playbook -i tests/inventory tests/test-playbook.yml -K -e \
+   ansible-playbook -i inventory my-playbook.yml -K -e \
        "{packages_purge: [gedit, rolldice]}"
 
 
@@ -911,7 +964,7 @@ This variable defaults to 1234.
          password: 4321
 
    # To a playbook from terminal.
-   ansible-playbook -i tests/inventory tests/test-playbook.yml -K -e \
+   ansible-playbook -i inventory my-playbook.yml -K -e \
        "password=4321"
 
 
@@ -943,7 +996,7 @@ This variable is empty by default.
              repo: deb http://www.debian-multimedia.org sid main
 
    # To a playbook from terminal.
-   ansible-playbook -i tests/inventory tests/test-playbook.yml -K -e \
+   ansible-playbook -i inventory my-playbook.yml -K -e \
        "{repositories: [{ \
             name: multimedia, \
             repo: 'deb http://www.debian-multimedia.org sid main' \
@@ -975,7 +1028,7 @@ This variable is empty by default.
            - nginx
 
    # To a playbook from terminal.
-   ansible-playbook -i tests/inventory tests/test-playbook.yml -K -e \
+   ansible-playbook -i inventory my-playbook.yml -K -e \
        "{services: [mosquitto, nginx]}"
 
 
@@ -1004,7 +1057,7 @@ This variable is empty by default.
            - nginx
 
    # To a playbook from terminal.
-   ansible-playbook -i tests/inventory tests/test-playbook.yml -K -e \
+   ansible-playbook -i inventory my-playbook.yml -K -e \
        "{services_disable: [mosquitto, nginx]}"
 
 
@@ -1027,8 +1080,24 @@ This variable is empty by default.
 
    # Including from terminal.
    ansible localhost -m include_role -a name=constrict0r.develpy -K -e \
-       "{system_skeleton: [https://gitlab.com/huertico/server]}"
+       "{system_skeleton: [item_path: https://gitlab.com/huertico/server, item_expand: false]}"
 
+   # Or:
+   # Including from terminal.
+   ansible localhost -m include_role -a name=constrict0r.develpy -K -e \
+       "{system_skeleton:https://gitlab.com/huertico/server, expand: false}"
+
+   # Including on a playbook.
+   - hosts: servers
+     roles:
+       - role: constrict0r.develpy
+         system_skeleton:
+           - item_path: https://gitlab.com/huertico/server
+             item_expand: false
+           - item_path: https://gitlab.com/huertico/client
+             item_expand: false
+
+   # Or:
    # Including on a playbook.
    - hosts: servers
      roles:
@@ -1036,10 +1105,16 @@ This variable is empty by default.
          system_skeleton:
            - https://gitlab.com/huertico/server
            - https://gitlab.com/huertico/client
+         expand: false
 
    # To a playbook from terminal.
-   ansible-playbook -i tests/inventory tests/test-playbook.yml -K -e \
-       "{system_skeleton: [https://gitlab.com/huertico/server]}"
+   ansible-playbook -i inventory my-playbook.yml -K -e \
+       "{system_skeleton: [item_path: https://gitlab.com/huertico/server, item_expand: false]}"
+
+   # Or:
+   # To a playbook from terminal.
+   ansible-playbook -i inventory my-playbook.yml -K -e \
+       "{system_skeleton: [https://gitlab.com/huertico/server], expand: false}"
 
 
 upgrade
@@ -1065,7 +1140,7 @@ This variable is set to *true* by default.
          upgrade: false
 
    # To a playbook from terminal.
-   ansible-playbook -i tests/inventory tests/test-playbook.yml -K -e \
+   ansible-playbook -i inventory my-playbook.yml -K -e \
        "upgrade=false"
 
 
@@ -1095,7 +1170,7 @@ This variable is empty by default.
            - jhon
 
    # To a playbook from terminal.
-   ansible-playbook -i tests/inventory tests/test-playbook.yml -K -e \
+   ansible-playbook -i inventory my-playbook.yml -K -e \
        "{users: [mary, jhon]}"
 
 
@@ -1117,18 +1192,38 @@ This variable is empty by default.
 
    # Including from terminal.
    ansible localhost -m include_role -a name=constrict0r.develpy -K -e \
-       "{user_skeleton: [https://gitlab.com/constrict0r/home]}"
+       "{user_skeleton: [item_path: https://gitlab.com/constrict0r/home, item_expand: false]}"
+
+   # Or:
+   # Including from terminal.
+   ansible localhost -m include_role -a name=constrict0r.develpy -K -e \
+       "{user_skeleton: [https://gitlab.com/constrict0r/home], expand: false}"
 
    # Including on a playbook.
    - hosts: servers
      roles:
        - role: constrict0r.develpy
          user_skeleton:
+           - item_path: https://gitlab.com/constrict0r/home
+             item_expand: false
+
+   # Or:
+   # Including on a playbook.
+   - hosts: servers
+     roles:
+       - role: constrict0r.develpy
+         user_skeleton:
            - https://gitlab.com/constrict0r/home
+         expand: false
 
    # To a playbook from terminal.
-   ansible-playbook -i tests/inventory tests/test-playbook.yml -K -e \
-       "{user_skeleton: [https://gitlab.com/constrict0r/home]}"
+   ansible-playbook -i inventory my-playbook.yml -K -e \
+       "{user_skeleton: [item_path: https://gitlab.com/constrict0r/home, item_expand: false]}"
+
+   # Or:
+   # To a playbook from terminal.
+   ansible-playbook -i inventory my-playbook.yml -K -e \
+       "{user_skeleton: [https://gitlab.com/constrict0r/home], expand: false}"
 
 
 user_tasks
@@ -1146,18 +1241,38 @@ This variable is empty by default.
 
    # Including from terminal.
    ansible localhost -m include_role -a name=constrict0r.develpy -K -e \
-       "{user_tasks: [https://is.gd/vVCfKI]}"
+       "{user_tasks: [item_path: https://is.gd/vVCfKI, item_expand: false]}"
+
+   # Or:
+   # Including from terminal.
+   ansible localhost -m include_role -a name=constrict0r.develpy -K -e \
+       "{user_tasks: [https://is.gd/vVCfKI], expand: false}"
 
    # Including on a playbook.
    - hosts: servers
      roles:
        - role: constrict0r.develpy
          user_tasks:
+           - item_path: https://is.gd/vVCfKI
+             item_expand: false
+
+   # Or:
+   # Including on a playbook.
+   - hosts: servers
+     roles:
+       - role: constrict0r.develpy
+         user_tasks:
            - https://is.gd/vVCfKI
+         expand: false
 
    # To a playbook from terminal.
-   ansible-playbook -i tests/inventory tests/test-playbook.yml -K -e \
-       "{user_tasks: [https://is.gd/vVCfKI]}"
+   ansible-playbook -i inventory my-playbook.yml -K -e \
+       "{user_tasks: [item_path: https://is.gd/vVCfKI, item_expand: false]}"
+
+   # Or:
+   # To a playbook from terminal.
+   ansible-playbook -i inventory my-playbook.yml -K -e \
+       "{user_tasks: [https://is.gd/vVCfKI], expand: false}"
 
 
 configuration
@@ -1183,6 +1298,7 @@ This variable is empty by default.
 
 To see how to write  a configuration file see the *YAML* file format
 section.
+
 
 
 YAML
@@ -1219,6 +1335,7 @@ If the expand variable is *false*, any file path or URL found will be
 treated like plain text.
 
 
+
 Attributes
 **********
 
@@ -1252,8 +1369,8 @@ Password for the item to load or create.
      - item_pass: my-item-pass
 
 
-item_groups
-===========
+item_group
+==========
 
 List of groups to add users into.
 
@@ -1262,7 +1379,7 @@ List of groups to add users into.
    ---
    packages:
      - item_name: my-username
-       item_groups: [disk, sudo]
+       item_group: [disk, sudo]
 
 
 item_expand
@@ -1293,6 +1410,7 @@ Absolute file path or URL to a *.yml* file.
 This attribute also works with URLs.
 
 
+
 Requirements
 ************
 
@@ -1317,6 +1435,7 @@ If you want to run the tests, you will also need:
 * `Setuptools <https://pypi.org/project/setuptools/>`_.
 
 
+
 Compatibility
 *************
 
@@ -1329,10 +1448,12 @@ Compatibility
 * `Ubuntu Xenial <http://releases.ubuntu.com/16.04/>`_.
 
 
+
 License
 *******
 
 MIT. See the LICENSE file for more details.
+
 
 
 Links
@@ -1349,6 +1470,7 @@ Links
 * `Travis CI <https://travis-ci.com/constrict0r/develpy>`_.
 
 
+
 UML
 ***
 
@@ -1358,8 +1480,9 @@ Deployment
 
 The full project structure is shown below:
 
-.. image:: https://gitlab.com/constrict0r/img/raw/master/develpy/deployment.png
-   :alt: deployment
+.. image:: https://gitlab.com/constrict0r/img/raw/master/develpy/deploy.png
+   :alt: deploy
+
 
 
 Author
@@ -1374,4 +1497,5 @@ Enjoy!!!
 
 .. image:: https://gitlab.com/constrict0r/img/raw/master/develpy/enjoy.png
    :alt: enjoy
+
 
