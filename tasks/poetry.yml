@@ -6,6 +6,12 @@
       - 'Configuring poetry ...'
       - '--------------------------------------------------------------------'
 
+- name: Install poetry.
+  command: curl -sSL https://is.gd/ddGtw4 | python
+  become: true
+  changed_when: false
+  when: not ansible_check_mode
+
 - name: Enable direnv command on ~/.profile.
   lineinfile:
     path: "/home/{{ item }}/.profile"
